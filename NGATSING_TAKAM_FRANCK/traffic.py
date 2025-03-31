@@ -7,7 +7,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from sklearn.model_selection import train_test_split
 
-EPOCHS = 10
+EPOCHS = 50
 IMG_WIDTH = 30
 IMG_HEIGHT = 30
 NUM_CATEGORIES = 43
@@ -39,7 +39,7 @@ def main():
     model.evaluate(x_test,  y_test, verbose=2)
 
     # Save model to file
-    save_dir = r'H:/introduction to ai/New folder/PYTHONAIPROJECT/NGATSING_TAKAM_FRANCK'
+    save_dir = "H:/introduction_to_ai/New_folder/PYTHONAIPROJECT/NGATSING_TAKAM_FRANCK/"
     if len(sys.argv) == 3:
         filename = sys.argv[2]  # Get filename from command-line argument
         save_path = os.path.join(save_dir, filename)

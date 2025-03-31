@@ -1,67 +1,164 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 import cv2
 import numpy as np
-import tensorflow as tf
-from PIL import Image, ImageTk
+from tensorflow.keras.models import load_model
 
-IMG_WIDTH = 30
-IMG_HEIGHT = 30
+class TrafficSignPredictor:
+    def __init__(self, root):
+        self.root = root
+        self.model = None
+        self.image_path = None
+        self.setup_ui()
 
-# Load the trained model
-model_path = "H:\introduction to ai\New folder\PYTHONAIPROJECT\NGATSING_TAKAM_FRANCK/traffic_model.h5"
-model = tf.keras.models.load_model(model_path)
+    def setup_ui(self):
+        # Configure window
+        self.root.title("Traffic Sign Predictor 🚦")
+        self.root.configure(bg="#2c3e50")  # Dark blue background
 
-def predict_image(image_path):
-    img = cv2.imread(image_path)
-    img = cv2.resize(img, (IMG_WIDTH, IMG_HEIGHT))
-    img = np.array(img) / 255.0  # Normalize
-    img = img.reshape(1, IMG_WIDTH, IMG_HEIGHT, 3)  # Add batch dimension
+        # Create main frames
+        self.header_frame = tk.Frame(self.root, bg="#3498db")  # Blue header
+        self.content_frame = tk.Frame(self.root, bg="#2c3e50")
+        self.footer_frame = tk.Frame(self.root, bg="#3498db")
 
-    predictions = model.predict(img)
-    predicted_class = np.argmax(predictions)
-    confidence = np.max(predictions) * 100
+        # Header
+        self.header_label = tk.Label(
+            self.header_frame,
+            text="Traffic Sign Recognition System",
+            font=("Arial", 16, "bold"),
+            fg="white",
+            bg="#3498db"
+        )
+        self.header_label.pack(pady=10)
 
-    return predicted_class, confidence
+        # Content
+        self.model_label = tk.Label(
+            self.content_frame,
+            text="Model Status: Not Loaded",
+            font=("Arial", 12),
+            fg="white",
+            bg="#2c3e50"
+        )
+        self.model_label.pack(pady=5)
 
-def upload_image():
-    file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png;*.jpg;*.jpeg")])
-    if file_path:
-        predicted_class, confidence = predict_image(file_path)
+        self.image_label = tk.Label(
+            self.content_frame,
+            text="No Image Selected",
+            font=("Arial", 12),
+            fg="white",
+            bg="#2c3e50"
+        )
+        self.image_label.pack(pady=5)
 
-        # Print to console for debugging
-        print(f"Predicted Class: {predicted_class}, Confidence: {confidence:.2f}%")  
-        
-        result_label.config(text=f"Predicted: {predicted_class}, Confidence: {confidence:.2f}%")
+        self.prediction_label = tk.Label(
+            self.content_frame,
+            text="Prediction: -",
+            font=("Arial", 12),
+            fg="white",
+            bg="#2c3e50"
+        )
+        self.prediction_label.pack(pady=5)
 
-        img = Image.open(file_path)
-        img = img.resize((200, 200))  # Resize for display
-        img = ImageTk.PhotoImage(img)
-        img_label.config(image=img)
-        img_label.image = img
+        # Buttons
+        self.button_frame = tk.Frame(self.content_frame, bg="#2c3e50")
+        self.button_frame.pack(pady=10)
 
-# Create GUI
-root = tk.Tk()
-root.title("Traffic Sign Classifier")
+        self.load_model_button = tk.Button(
+            self.button_frame,
+            text="Load Model",
+            command=self.load_model,
+            bg="#e74c3c",  # Red
+            fg="white",
+            font=("Arial", 10, "bold")
+        )
+        self.load_model_button.pack(side=tk.LEFT, padx=5)
 
-# Set the background color of the window
-root.configure(bg="#f0f0f0")
+        self.load_image_button = tk.Button(
+            self.button_frame,
+            text="Load Image",
+            command=self.load_image,
+            bg="#2ecc71",  # Green
+            fg="white",
+            font=("Arial", 10, "bold")
+        )
+        self.load_image_button.pack(side=tk.LEFT, padx=5)
 
-# Frame for the button and labels with padding
-frame = tk.Frame(root, bg="#f0f0f0")
-frame.pack(pady=30)
+        self.predict_button = tk.Button(
+            self.button_frame,
+            text="Predict",
+            command=self.predict,
+            bg="#9b59b6",  # Purple
+            fg="white",
+            font=("Arial", 10, "bold")
+        )
+        self.predict_button.pack(side=tk.LEFT, padx=5)
 
-# Button with a more stylish design
-btn = tk.Button(frame, text="Upload Image", command=upload_image, font=("Arial", 14), bg="#4CAF50", fg="white", relief="flat", width=20, height=2)
-btn.pack()
+        # Footer
+        self.footer_label = tk.Label(
+            self.footer_frame,
+            text="Developed by NGATSING TAKAM FRANCK",
+            font=("Arial", 10),
+            fg="white",
+            bg="#3498db"
+        )
+        self.footer_label.pack(pady=5)
 
-# Label for displaying the image
-img_label = tk.Label(root, bg="#f0f0f0")
-img_label.pack(pady=20)
+        # Layout
+        self.header_frame.pack(fill=tk.X)
+        self.content_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        self.footer_frame.pack(fill=tk.X)
 
-# Result label with a more prominent style
-result_label = tk.Label(root, text="Upload an image to classify", font=("Arial", 14, "bold"), bg="#f0f0f0", fg="#333")
-result_label.pack()
+    def load_model(self):
+        try:
+            model_path = filedialog.askopenfilename(
+                title="Select Model File",
+                filetypes=[("HDF5 Files", "*.h5")]
+            )
+            if model_path:
+                self.model = load_model(model_path)
+                self.model_label.config(text=f"Model Status: Loaded ({model_path})")
+                self.model_label.config(fg="green")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load model: {str(e)}")
 
-# Start the Tkinter event loop
-root.mainloop()
+    def load_image(self):
+        try:
+            self.image_path = filedialog.askopenfilename(
+                title="Select Traffic Sign Image",
+                filetypes=[("Image Files", ".png .jpg .jpeg")]
+            )
+            if self.image_path:
+                self.image_label.config(text=f"Image Selected: {self.image_path}")
+                self.image_label.config(fg="green")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load image: {str(e)}")
+
+    def predict(self):
+        if not self.model or not self.image_path:
+            messagebox.showerror("Error", "Please load both model and image first!")
+            return
+
+        try:
+            # Preprocess image
+            img = cv2.imread(self.image_path)
+            img = cv2.resize(img, (30, 30))
+            img = img / 255.0
+            img = np.expand_dims(img, axis=0)
+
+            # Predict
+            predictions = self.model.predict(img)
+            predicted_class = np.argmax(predictions)
+            confidence = np.max(predictions) * 100
+
+            # Update UI
+            self.prediction_label.config(
+                text=f"Prediction: Class {predicted_class} - {confidence:.2f}% Confidence",
+                fg="green" if confidence > 70 else "orange"
+            )
+        except Exception as e:
+            messagebox.showerror("Error", f"Prediction failed: {str(e)}")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = TrafficSignPredictor(root)
+    root.mainloop()
