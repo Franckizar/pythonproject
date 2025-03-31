@@ -1,7 +1,7 @@
 # Traffic Sign Recognition Project
 
 ## Overview
-This project utilizes a neural network to classify traffic signs. The model is trained on a traffic sign dataset and is capable of predicting the type of traffic sign from a given image. A simple Tkinter-based GUI allows users to upload an image and view the prediction.
+This project utilizes a neural network to classify traffic signs. The model is trained on a traffic sign dataset and can predict the type of traffic sign from a given image. A simple Tkinter-based GUI allows users to upload an image and view the prediction.
 
 ## Folder Structure
 - **traffic.py**: Python script for training the model.
@@ -22,7 +22,29 @@ This project utilizes a neural network to classify traffic signs. The model is t
       sudo apt-get install python3-tk
       ```
 
-2. **Clone the repository**:
+2. **Create a virtual environment** (optional but recommended):
+    - To create a virtual environment, run:
+      ```bash
+      python -m venv venv
+      ```
+    - Activate the virtual environment:
+      - On Windows:
+        ```bash
+        .\venv\Scripts\activate
+        ```
+      - On macOS/Linux:
+        ```bash
+        source venv/bin/activate
+        ```
+
+3. **Install the required dependencies**:
+    - After activating the virtual environment, install the required dependencies listed in `requirements.txt` (if you have this file). If it’s not available, run the following to install TensorFlow and Tkinter:
+      ```bash
+      pip install tensorflow
+      pip install tk
+      ```
+
+4. **Clone the repository**:
     - Clone the repository to your local machine:
       ```bash
       git clone https://github.com/Franckizar/pythonproject.git
@@ -31,6 +53,6 @@ This project utilizes a neural network to classify traffic signs. The model is t
 ## Training the Model
 
 1. The **traffic.py** file contains the code for training the neural network on the traffic sign dataset.
-2. Run the following command to train the model and save the trained model as `annotherone_model.h5`:
+2. Run the following command to train the model and save the best version as `best_model.h5`:
    ```bash
    python traffic.py
