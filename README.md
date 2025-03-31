@@ -5,7 +5,7 @@ This project utilizes a neural network to classify traffic signs. The model is t
 
 ## Folder Structure
 - **traffic.py**: Python script for training the model.
-- **best_model.h5**: The saved version of the best-trained model.
+- **anotherone_model.h5**: The saved version of the best-trained model.
 - **predict_sign.py**: Python script with a Tkinter GUI for uploading an image and displaying the prediction.
 - **images/**: Directory containing 10 sample traffic sign images (used for testing).
 - **other_models/** (optional): Directory for any additional models you may have trained.
@@ -53,6 +53,6 @@ This project utilizes a neural network to classify traffic signs. The model is t
 ## Training the Model
 
 1. The **traffic.py** file contains the code for training the neural network on the traffic sign dataset.
-2. Run the following command to train the model and save the best version as `best_model.h5`:
+2. Run the following command to train the model and save the best version as `anotherone_model`:
    ```bash
    python traffic.py
