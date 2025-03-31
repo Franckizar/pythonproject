@@ -9,7 +9,7 @@ IMG_WIDTH = 30
 IMG_HEIGHT = 30
 
 # Load the trained model
-model_path = "C:/Users/TAKAM/Downloads/AIProject-master/AIProject-master/BalembaJessy/traffic_model.h5"
+model_path = "H:\introduction to ai\New folder\PYTHONAIPROJECT\NGATSING_TAKAM_FRANCK/traffic_model.h5"
 model = tf.keras.models.load_model(model_path)
 
 def predict_image(image_path):

@@ -39,7 +39,7 @@ def main():
     model.evaluate(x_test,  y_test, verbose=2)
 
     # Save model to file
-    save_dir = r'C:/Users/Balemba/Desktop/AIProject/BalembaJessy'
+    save_dir = r'H:/introduction to ai/New folder/PYTHONAIPROJECT/NGATSING_TAKAM_FRANCK'
     if len(sys.argv) == 3:
         filename = sys.argv[2]  # Get filename from command-line argument
         save_path = os.path.join(save_dir, filename)
