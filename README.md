@@ -25,12 +25,12 @@ This project utilizes a neural network to classify traffic signs. The model is t
 2. **Clone the repository**:
     - Clone the repository to your local machine:
       ```bash
-      git clone https://github.com/Balemba-Jeez/AIProject.git
+      git clone https://github.com/Franckizar/pythonproject.git
       ```
 
 ## Training the Model
 
 1. The **traffic.py** file contains the code for training the neural network on the traffic sign dataset.
-2. Run the following command to train the model and save the trained model as `best_model.h5`:
+2. Run the following command to train the model and save the trained model as `annotherone_model.h5`:
    ```bash
    python traffic.py
